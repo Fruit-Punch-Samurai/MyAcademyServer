@@ -10,11 +10,11 @@ import module
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 import org.kodein.di.generic.instance
 import org.litote.kmongo.id.toId
-import utils.RankType
-import kotlin.test.Test
+import utils.sealed.RankType
 import kotlin.test.assertTrue
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)

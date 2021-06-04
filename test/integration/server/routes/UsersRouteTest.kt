@@ -8,11 +8,12 @@ import module
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 import org.litote.kmongo.id.toId
 import server.routes.RoutingConstants
-import utils.RankType
-import kotlin.test.Test
+import utils.Extensions.toJsonElement
+import utils.sealed.RankType
 import kotlin.test.assertEquals
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -27,14 +28,11 @@ class UsersRouteTest {
         val call = handleRequest(HttpMethod.Post, usersPath) {
             addHeader(HttpHeaders.ContentType, "application/json")
             addHeader(HttpHeaders.Accept, "*/*")
-            setBody(
-                User(userId, "nomnom", RankType.Admin, true).toString()
-            )
+            setBody(User(userId, "nomnom", RankType.Admin, true).toJsonElement().toString())
         }
 
         with(call) {
-            assertEquals(HttpStatusCode.OK, response.status())
-            assertEquals(response.content, "true")
+            assertEquals(HttpStatusCode.Accepted, response.status())
         }
     }
 
