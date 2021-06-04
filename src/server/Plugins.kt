@@ -10,7 +10,7 @@ import org.litote.kmongo.id.serialization.IdKotlinXSerializationModule
 import server.security.Auth.setupAdminUserAuth
 import server.security.Auth.setupRegularUserAuth
 
-object Features {
+object Plugins {
 
     fun Application.setupFeatures() {
         install(CallLogging)

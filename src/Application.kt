@@ -1,11 +1,11 @@
+
 import io.ktor.application.*
-import io.ktor.client.*
-import io.ktor.client.engine.jetty.*
-import server.Features.setupFeatures
+import io.ktor.server.jetty.*
+import server.Plugins.setupFeatures
 import server.routes.MainRouting.setupRoutes
 import utils.DependencyInjection
 
-fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
+fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 //TODO: Remove development mode on production
 //TODO: Custom port to fool scanners
@@ -21,9 +21,6 @@ val kodein = DependencyInjection.inject()
 
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    HttpClient(Jetty) {
         setupFeatures()
         setupRoutes()
-    }
-
 }

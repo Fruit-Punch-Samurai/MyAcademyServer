@@ -1,7 +1,7 @@
 val logbackVersion: String by project
 val ktorVersion: String by project
 val kotlinVersion: String by project
-val kmongoVersion : String by project
+val kmongoVersion: String by project
 
 plugins {
     application
@@ -30,9 +30,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
     implementation("io.ktor:ktor-server-jetty:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-client-jetty:$ktorVersion")
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-server-jetty:$ktorVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-serialization:$ktorVersion")
 
@@ -44,7 +43,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.0")
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
-    testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation(kotlin("test"))
 }
 
