@@ -7,15 +7,15 @@ import org.litote.kmongo.Id
 
 @Serializable
 data class Teacher(
-    override val _id: @Contextual Id<Customer>? = null,
-    override val name: String? = null,
-    override var firstName: String? = null,
-    override var birthPlace: String? = null,
-    override val birthDate: LocalDateTime? = null,
-    override var gender: String? = null,
-    override var address: String? = null,
-    override var email: String? = null,
-    override var phone: String? = null,
-    override var notes: String? = null,
-    override val date: LocalDateTime? = null
-) : Customer()
+    val _id: @Contextual Id<Teacher>? = null,
+    val name: String? = null,
+    var firstName: String? = null,
+    var birthPlace: String? = null,
+    val birthDate: LocalDateTime? = null,
+    var gender: String? = null,
+    var address: String? = null,
+    var email: String? = null,
+    var phone: String? = null,
+    var notes: String? = null,
+    val date: LocalDateTime? = null
+) : Entity

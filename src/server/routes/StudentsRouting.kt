@@ -9,6 +9,7 @@ import io.ktor.routing.*
 import kodein
 import models.Student
 import org.kodein.di.generic.instance
+import utils.sealed.MyResult
 
 object StudentsRouting {
 
@@ -24,15 +25,16 @@ object StudentsRouting {
 
     private fun Route.setupGetRequests() {
         get {
-            call.respond(repo.getAllStudents())
+            val result = repo.getAllStudents()
+            if (result is MyResult.Success) call.respond(result.value)
+            else call.response.status(HttpStatusCode.NotFound)
         }
 
         get(RoutingConstants.ID_PARAM_ROUTE) {
-            val student = repo.getStudent(call.parameters[RoutingConstants.ID_PARAM_NAME]!!)
+            val result = repo.getStudent(call.parameters[RoutingConstants.ID_PARAM_NAME]!!)
 
-            if (student != null) call.respond(student)
+            if (result is MyResult.Success) call.respond(result.value)
             else call.response.status(HttpStatusCode.NotFound)
-
         }
     }
 
@@ -40,18 +42,22 @@ object StudentsRouting {
     private fun Route.setupPostRequests() {
         post {
             val student = call.receive<Student>()
-            call.respond(repo.addStudent(student))
-            call.response.status(HttpStatusCode.OK)
+            val result = repo.addStudent(student)
+
+            if (result is MyResult.Success) {
+                call.response.status(HttpStatusCode.Accepted)
+            } else call.response.status(HttpStatusCode.NotAcceptable)
         }
     }
 
     private fun Route.setupDeleteRequests() {
         delete(RoutingConstants.ID_PARAM_ROUTE) {
             val id = call.parameters[RoutingConstants.ID_PARAM_NAME] ?: return@delete
-            call.defaultTextContentType(ContentType.Text.Plain)
-            call.respond(repo.deleteStudent(id))
-            call.response.status(HttpStatusCode.OK)
+            val result = repo.deleteStudent(id)
+            if (result is MyResult.Success) call.response.status(HttpStatusCode.OK)
+            else call.response.status(HttpStatusCode.NotAcceptable)
         }
 
     }
+
 }
