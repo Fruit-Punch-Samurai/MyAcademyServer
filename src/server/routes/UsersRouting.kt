@@ -29,15 +29,16 @@ object UsersRouting {
 
     private fun Route.setupGetRequests() {
         get {
-            call.respond(repo.getAllUsers())
+            val result = repo.getAllUsers()
+            if (result is MyResult.Success) call.respond(result.value)
+            else call.response.status(HttpStatusCode.NotFound)
         }
 
         get(ID_PARAM_ROUTE) {
-            val user = repo.getUser(call.parameters[ID_PARAM_NAME]!!)
+            val result = repo.getUser(call.parameters[ID_PARAM_NAME]!!)
 
-            if (user != null) call.respond(user)
+            if (result is MyResult.Success) call.respond(result.value)
             else call.response.status(HttpStatusCode.NotFound)
-
         }
     }
 
@@ -56,9 +57,9 @@ object UsersRouting {
     private fun Route.setupDeleteRequests() {
         delete(ID_PARAM_ROUTE) {
             val id = call.parameters[ID_PARAM_NAME] ?: return@delete
-            call.defaultTextContentType(ContentType.Text.Plain)
-            call.respond(repo.deleteUser(id))
-            call.response.status(HttpStatusCode.OK)
+            val result = repo.deleteUser(id)
+            if (result is MyResult.Success) call.response.status(HttpStatusCode.OK)
+            else call.response.status(HttpStatusCode.NotAcceptable)
         }
 
     }

@@ -55,12 +55,10 @@ class UsersRouteTest {
     @Order(4)
     @Test
     fun test_deleteOne_request() = withTestApplication(Application::module) {
-        val call = handleRequest(HttpMethod.Delete, "$usersPath/$userId") {
-            addHeader(HttpHeaders.ContentType, ContentType.Text.Plain.contentType)
-        }
+        val call = handleRequest(HttpMethod.Delete, "$usersPath/$userId")
+
         with(call) {
             assertEquals(HttpStatusCode.OK, response.status())
-            assertEquals(this.response.content, "true")
         }
     }
 

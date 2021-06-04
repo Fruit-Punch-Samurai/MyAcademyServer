@@ -17,8 +17,24 @@ class MainRepo {
     private val teachersRepo: TeachersRepo by kodein.instance()
     private val historyRepo: HistoryRepo by kodein.instance()
 
-    suspend fun getAllUsers() = usersRepo.getAllUsers()
-    suspend fun getUser(id: String) = usersRepo.getUser(id)
+    suspend fun getAllUsers(): MyResult<List<User>> {
+        return try {
+            val list = usersRepo.getAllUsers()
+            if (list.isEmpty()) MyResult.Failure(msg = "No users")
+            else MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+    suspend fun getUser(id: String): MyResult<User> {
+        return try {
+            val user = usersRepo.getUser(id)
+            return if (user == null) MyResult.Failure(msg = "User not found")
+            else MyResult.Success(user)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
     suspend fun addUser(user: User): MyResult<Unit> {
         return try {
             val acknowledged = usersRepo.addUser(user).wasAcknowledged()
@@ -27,8 +43,14 @@ class MainRepo {
             MyResult.Failure(e)
         }
     }
-
-    suspend fun deleteUser(id: String) = usersRepo.deleteUser(id).wasAcknowledged()
+    suspend fun deleteUser(id: String): MyResult<Unit> {
+        return try {
+            val result = usersRepo.deleteUser(id).wasAcknowledged()
+            if (result) MyResult.Success(Unit) else MyResult.Failure(msg = "Delete failed")
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
 
     suspend fun getAllPrivateUsers() = pUsersRepo.getAllPrivateUsers()
     suspend fun getPrivateUser(id: String) = pUsersRepo.getPrivateUser(id)
