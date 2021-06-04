@@ -3,7 +3,7 @@ package models
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.Id
-import utils.RankType
+import utils.sealed.RankType
 import utils.Serializers
 
 @Serializable

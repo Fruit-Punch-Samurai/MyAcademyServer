@@ -4,7 +4,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.Id
-import utils.HistoryType
+import utils.sealed.HistoryType
 import utils.Serializers
 
 @Serializable

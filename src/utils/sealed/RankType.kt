@@ -1,4 +1,4 @@
-package utils
+package utils.sealed
 
 sealed interface RankType {
     object Guest : RankType
