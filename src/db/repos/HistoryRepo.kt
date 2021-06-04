@@ -3,8 +3,11 @@ package db.repos
 import db.constants.DBConstants
 import kodein
 import models.History
+import org.bson.types.ObjectId
 import org.kodein.di.generic.instance
 import org.litote.kmongo.coroutine.CoroutineDatabase
+import org.litote.kmongo.eq
+import org.litote.kmongo.id.toId
 
 class HistoryRepo {
 
@@ -13,9 +16,12 @@ class HistoryRepo {
 
     suspend fun getAllHistories() = col.find().toList()
 
-    suspend fun addHistory(history: History) {
-        col.insertOne(history)
-    }
+    suspend fun getHistory(id: String) = col.findOneById(ObjectId(id))
 
+    suspend fun addHistory(history: History) = col.insertOne(history)
+
+    suspend fun deleteHistory(history: History) = deleteHistory(history._id.toString())
+
+    suspend fun deleteHistory(id: String) = col.deleteOne(History::_id eq ObjectId(id).toId())
 
 }

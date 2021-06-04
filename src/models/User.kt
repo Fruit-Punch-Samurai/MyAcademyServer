@@ -3,8 +3,8 @@ package models
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.Id
-import utils.RankType
 import utils.Serializers
+import utils.sealed.RankType
 
 @Serializable
 data class User(

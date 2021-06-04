@@ -11,6 +11,7 @@ import models.User
 import org.kodein.di.generic.instance
 import server.routes.RoutingConstants.ID_PARAM_NAME
 import server.routes.RoutingConstants.ID_PARAM_ROUTE
+import utils.sealed.MyResult
 
 object UsersRouting {
 
@@ -44,8 +45,11 @@ object UsersRouting {
     private fun Route.setupPostRequests() {
         post {
             val user = call.receive<User>()
-            call.respond(repo.addUser(user))
-            call.response.status(HttpStatusCode.OK)
+            val result = repo.addUser(user)
+
+            if (result is MyResult.Success) {
+                call.response.status(HttpStatusCode.Accepted)
+            } else call.response.status(HttpStatusCode.NotAcceptable)
         }
     }
 

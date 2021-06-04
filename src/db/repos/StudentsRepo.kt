@@ -20,7 +20,7 @@ class StudentsRepo {
 
     suspend fun addStudent(student: Student) = col.insertOne(student)
 
-    suspend fun deleteStudent(user: Student) = deleteStudent(user._id.toString())
+    suspend fun deleteStudent(student: Student) = deleteStudent(student._id.toString())
 
     suspend fun deleteStudent(id: String) = col.deleteOne(Student::_id eq ObjectId(id).toId())
 
