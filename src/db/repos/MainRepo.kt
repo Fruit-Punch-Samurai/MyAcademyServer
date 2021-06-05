@@ -83,6 +83,7 @@ class MainRepo {
         }
     }
 
+    //TODO: add to routing & tests, and make it with multiple fields
     suspend fun searchStudents(student: Student): MyResult<List<Student>> {
         return try {
             val list = studentsRepo.searchForStudents(student)

@@ -12,6 +12,9 @@ object RoutingConstants {
     const val TEACHERS_ROUTE = "/teachers"
     const val HISTORY_ROUTE = "/history"
 
+    const val SEARCH_ROUTE = "/search"
+
     const val ID_PARAM_ROUTE = "/{id}"
     const val ID_PARAM_NAME = "id"
+
 }
