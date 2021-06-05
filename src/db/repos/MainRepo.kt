@@ -83,9 +83,28 @@ class MainRepo {
         }
     }
 
+    suspend fun searchStudents(student: Student): MyResult<List<Student>> {
+        return try {
+            val list = studentsRepo.searchForStudents(student)
+            return if (list.isEmpty()) MyResult.Failure(msg = "Students not found")
+            else MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
     suspend fun addStudent(student: Student): MyResult<Unit> {
         return try {
             val acknowledged = studentsRepo.addStudent(student).wasAcknowledged()
+            if (acknowledged) MyResult.Success(Unit) else MyResult.Failure()
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun updateStudent(student: Student): MyResult<Unit> {
+        return try {
+            val acknowledged = studentsRepo.updateStudent(student).wasAcknowledged()
             if (acknowledged) MyResult.Success(Unit) else MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
@@ -107,7 +126,7 @@ class MainRepo {
     suspend fun addTeacher(teacher: Teacher) = teachersRepo.addTeacher(teacher).wasAcknowledged()
     suspend fun deleteTeacher(id: String) = teachersRepo.deleteTeacher(id).wasAcknowledged()
 
-    
+
     suspend fun getAllHistories() = historyRepo.getAllHistories()
     suspend fun getHistory(id: String) = historyRepo.getHistory(id)
     suspend fun addHistory(history: History) = historyRepo.addHistory(history).wasAcknowledged()

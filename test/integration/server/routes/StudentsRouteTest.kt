@@ -25,9 +25,8 @@ class StudentsRouteTest {
     @Test
     fun test_post_request(): Unit = withTestApplication(Application::module) {
         val call = handleRequest(HttpMethod.Post, studentsPath) {
-            addHeader(HttpHeaders.ContentType, "application/json")
-            addHeader(HttpHeaders.Accept, "*/*")
-            setBody(Student(studentId, "nomnom","first", "place").toJsonElement().toString())
+            addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+            setBody(Student(studentId, "nomnom", "first", "place").toJsonElement().toString())
         }
 
         with(call) {

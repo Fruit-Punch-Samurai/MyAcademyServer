@@ -44,10 +44,18 @@ object StudentsRouting {
             val student = call.receive<Student>()
             val result = repo.addStudent(student)
 
-            if (result is MyResult.Success) {
-                call.response.status(HttpStatusCode.Accepted)
-            } else call.response.status(HttpStatusCode.NotAcceptable)
+            if (result is MyResult.Success) call.response.status(HttpStatusCode.Accepted)
+            else call.response.status(HttpStatusCode.NotAcceptable)
         }
+
+        post(RoutingConstants.ID_PARAM_ROUTE) {
+            val student = call.receive<Student>()
+            val result = repo.updateStudent(student)
+
+            if (result is MyResult.Success) call.response.status(HttpStatusCode.Accepted)
+            else call.response.status(HttpStatusCode.NotAcceptable)
+        }
+
     }
 
     private fun Route.setupDeleteRequests() {
