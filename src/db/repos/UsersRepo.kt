@@ -22,7 +22,7 @@ class UsersRepo {
 
     suspend fun deleteUser(user: User) = deleteUser(user._id.toString())
 
-    suspend fun deleteUser(id: String) = col.deleteOne(User::_id eq ObjectId(id).toId())
+    suspend fun deleteUser(id: String) = col.findOneAndDelete(User::_id eq ObjectId(id).toId())
 
 
 }

@@ -9,6 +9,7 @@ import io.ktor.routing.*
 import kodein
 import models.Teacher
 import org.kodein.di.generic.instance
+import utils.sealed.MyResult
 
 object TeachersRouting {
 
@@ -24,15 +25,16 @@ object TeachersRouting {
 
     private fun Route.setupGetRequests() {
         get {
-            call.respond(repo.getAllTeachers())
+            val result = repo.getAllTeachers()
+            if (result is MyResult.Success) call.respond(result.value)
+            else call.response.status(HttpStatusCode.NotFound)
         }
 
         get(RoutingConstants.ID_PARAM_ROUTE) {
-            val teacher = repo.getTeacher(call.parameters[RoutingConstants.ID_PARAM_NAME]!!)
+            val result = repo.getTeacher(call.parameters[RoutingConstants.ID_PARAM_NAME]!!)
 
-            if (teacher != null) call.respond(teacher)
+            if (result is MyResult.Success) call.respond(result.value)
             else call.response.status(HttpStatusCode.NotFound)
-
         }
     }
 
@@ -40,17 +42,36 @@ object TeachersRouting {
     private fun Route.setupPostRequests() {
         post {
             val teacher = call.receive<Teacher>()
-            call.respond(repo.addTeacher(teacher))
-            call.response.status(HttpStatusCode.OK)
+            val result = repo.addTeacher(teacher)
+
+            if (result is MyResult.Success) call.response.status(HttpStatusCode.Accepted)
+            else call.response.status(HttpStatusCode.NotAcceptable)
         }
+
+        post(RoutingConstants.ID_PARAM_ROUTE) {
+            val teacher = call.receive<Teacher>()
+            val result = repo.updateTeacher(teacher)
+
+            if (result is MyResult.Success) call.response.status(HttpStatusCode.Accepted)
+            else call.response.status(HttpStatusCode.NotAcceptable)
+        }
+
+        post(RoutingConstants.SEARCH_ROUTE) {
+            val teacher = call.receive<Teacher>()
+            val result = repo.searchTeachers(teacher)
+
+            if (result is MyResult.Success) call.respond(result.value)
+            else call.response.status(HttpStatusCode.NotFound)
+        }
+
     }
 
     private fun Route.setupDeleteRequests() {
         delete(RoutingConstants.ID_PARAM_ROUTE) {
             val id = call.parameters[RoutingConstants.ID_PARAM_NAME] ?: return@delete
-            call.defaultTextContentType(ContentType.Text.Plain)
-            call.respond(repo.deleteTeacher(id))
-            call.response.status(HttpStatusCode.OK)
+            val result = repo.deleteTeacher(id)
+            if (result is MyResult.Success) call.response.status(HttpStatusCode.OK)
+            else call.response.status(HttpStatusCode.NotAcceptable)
         }
 
     }

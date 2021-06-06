@@ -51,15 +51,25 @@ class StudentsRepoTest {
 
     @Order(4)
     @Test
-    fun test_search_for_existing_students() {
+    fun test_search_for_existing_students_1() {
         runBlocking {
-            val studentsList = repo.searchForStudents(student.copy(name = "na"))
+            val studentsList = repo.searchForStudents(Student(name = "na"))
             assertTrue(studentsList.isNotEmpty())
             assertTrue(studentsList.contains(student))
         }
     }
 
     @Order(5)
+    @Test
+    fun test_search_for_existing_students_2() {
+        runBlocking {
+            val studentsList = repo.searchForStudents(Student(name = "na", firstName = "st"))
+            assertTrue(studentsList.isNotEmpty())
+            assertTrue(studentsList.contains(student))
+        }
+    }
+
+    @Order(6)
     @Test
     fun test_search_for_non_existing_students() {
         runBlocking {
@@ -69,12 +79,12 @@ class StudentsRepoTest {
         }
     }
 
-    @Order(6)
+    @Order(7)
     @Test
     fun test_delete_student() {
         runBlocking {
             val result = repo.deleteStudent(student)
-            assertTrue(result.wasAcknowledged())
+            assertTrue(result!=null)
         }
     }
 

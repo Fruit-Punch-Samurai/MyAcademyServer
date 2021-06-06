@@ -26,7 +26,7 @@ class PrivateUsersRepo {
 
     suspend fun deletePrivateUser(privateUser: PrivateUser) = deletePrivateUser(privateUser._id.toString())
 
-    suspend fun deletePrivateUser(id: String) = col.deleteOne(PrivateUser::_id eq ObjectId(id).toId())
+    suspend fun deletePrivateUser(id: String) = col.findOneAndDelete(PrivateUser::_id eq ObjectId(id).toId())
 
 
 }

@@ -46,8 +46,8 @@ class UsersRepoTest {
     @Test
     fun test_delete_user() {
         runBlocking {
-            val result = repo.deleteUser(user)
-            assertTrue(result.wasAcknowledged())
+            val user = repo.deleteUser(user)
+            assertTrue(user != null)
         }
     }
 

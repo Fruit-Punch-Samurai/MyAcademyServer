@@ -48,8 +48,8 @@ class MainRepo {
 
     suspend fun deleteUser(id: String): MyResult<Unit> {
         return try {
-            val result = usersRepo.deleteUser(id).wasAcknowledged()
-            if (result) MyResult.Success(Unit) else MyResult.Failure(msg = "Delete failed")
+            val user = usersRepo.deleteUser(id)
+            if (user != null) MyResult.Success(Unit) else MyResult.Failure(msg = "Delete failed")
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
@@ -59,7 +59,7 @@ class MainRepo {
     suspend fun getAllPrivateUsers() = pUsersRepo.getAllPrivateUsers()
     suspend fun getPrivateUser(id: String) = pUsersRepo.getPrivateUser(id)
     suspend fun addPrivateUser(privateUser: PrivateUser) = pUsersRepo.addPrivateUser(privateUser).wasAcknowledged()
-    suspend fun deletePrivateUser(id: String) = pUsersRepo.deletePrivateUser(id).wasAcknowledged()
+    suspend fun deletePrivateUser(id: String) = pUsersRepo.deletePrivateUser(id) != null
     suspend fun getPrivateUser(name: String, pass: String) = pUsersRepo.getPrivateUser(name, pass)
 
 
@@ -83,7 +83,6 @@ class MainRepo {
         }
     }
 
-    //TODO: add to routing & tests, and make it with multiple fields
     suspend fun searchStudents(student: Student): MyResult<List<Student>> {
         return try {
             val list = studentsRepo.searchForStudents(student)
@@ -114,19 +113,70 @@ class MainRepo {
 
     suspend fun deleteStudent(id: String): MyResult<Unit> {
         return try {
-            val result = studentsRepo.deleteStudent(id).wasAcknowledged()
-            if (result) MyResult.Success(Unit) else MyResult.Failure(msg = "Delete failed")
+            val student = studentsRepo.deleteStudent(id)
+            if (student != null) MyResult.Success(Unit) else MyResult.Failure(msg = "Delete failed")
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
     }
 
 
-    suspend fun getAllTeachers() = teachersRepo.getAllTeachers()
-    suspend fun getTeacher(id: String) = teachersRepo.getTeacher(id)
-    suspend fun addTeacher(teacher: Teacher) = teachersRepo.addTeacher(teacher).wasAcknowledged()
-    suspend fun deleteTeacher(id: String) = teachersRepo.deleteTeacher(id).wasAcknowledged()
+    suspend fun getAllTeachers(): MyResult<List<Teacher>> {
+        return try {
+            val list = teachersRepo.getAllTeachers()
+            if (list.isEmpty()) MyResult.Failure(msg = "No teachers")
+            else MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
 
+    suspend fun getTeacher(id: String): MyResult<Teacher> {
+        return try {
+            val teacher = teachersRepo.getTeacher(id)
+            return if (teacher == null) MyResult.Failure(msg = "Teacher not found")
+            else MyResult.Success(teacher)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun searchTeachers(teacher: Teacher): MyResult<List<Teacher>> {
+        return try {
+            val list = teachersRepo.searchForTeachers(teacher)
+            return if (list.isEmpty()) MyResult.Failure(msg = "Teachers not found")
+            else MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun addTeacher(teacher: Teacher): MyResult<Unit> {
+        return try {
+            val acknowledged = teachersRepo.addTeacher(teacher).wasAcknowledged()
+            if (acknowledged) MyResult.Success(Unit) else MyResult.Failure()
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun updateTeacher(teacher: Teacher): MyResult<Unit> {
+        return try {
+            val acknowledged = teachersRepo.updateTeacher(teacher).wasAcknowledged()
+            if (acknowledged) MyResult.Success(Unit) else MyResult.Failure()
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun deleteTeacher(id: String): MyResult<Unit> {
+        return try {
+            val teacher = teachersRepo.deleteTeacher(id)
+            if (teacher != null) MyResult.Success(Unit) else MyResult.Failure(msg = "Delete failed")
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
 
     suspend fun getAllHistories() = historyRepo.getAllHistories()
     suspend fun getHistory(id: String) = historyRepo.getHistory(id)

@@ -18,15 +18,32 @@ class StudentsRepo {
 
     suspend fun getAllStudents() = col.find().toList()
 
+    //TODO: Sort by Date
+    suspend fun getLastStudents() = col.find().limit(100).toList()
+
     suspend fun getStudent(id: String) = col.findOneById(ObjectId(id))
 
     suspend fun searchForStudents(student: Student): List<Student> {
         return col.find(
-            Filters.regex(
-                Student::name.name,
-                ".*${student.name}.*",
-                "i"
-            )
+            student.name?.let {
+                Filters.regex(
+                    Student::name.name,
+                    ".*${it}.*",
+                    "i"
+                )
+            }, student.firstName?.let {
+                Filters.regex(
+                    Student::firstName.name,
+                    ".*${it}.*",
+                    "i"
+                )
+            }, student.phone?.let {
+                Filters.regex(
+                    Student::phone.name,
+                    ".*${it}.*",
+                    "i"
+                )
+            }
         ).toList()
     }
 
@@ -36,6 +53,6 @@ class StudentsRepo {
 
     suspend fun deleteStudent(student: Student) = deleteStudent(student._id.toString())
 
-    suspend fun deleteStudent(id: String) = col.deleteOne(Student::_id eq ObjectId(id).toId())
+    suspend fun deleteStudent(id: String) = col.findOneAndDelete(Student::_id eq ObjectId(id).toId())
 
 }
