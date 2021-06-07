@@ -116,8 +116,7 @@ class MainRepo {
     suspend fun getAllStudents(): MyResult<List<Student>> {
         return try {
             val list = studentsRepo.getAllStudents()
-            if (list.isEmpty()) MyResult.Failure(msg = "No students")
-            else MyResult.Success(list)
+            MyResult.Success(list)
         } catch (e: Exception) {
             MyResult.Failure(e)
         }

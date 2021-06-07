@@ -2,13 +2,13 @@ package server.routes
 
 import db.repos.MainRepo
 import io.ktor.application.*
-import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kodein
 import models.Credentials
 import org.kodein.di.generic.instance
+import utils.sealed.MyResult
 
 object LoginRouting {
 
@@ -26,10 +26,10 @@ object LoginRouting {
         post {
             val credentials = call.receive<Credentials>()
 
-            val userExists = repo.getPrivateUser(credentials)
+            val result = repo.getPrivateUser(credentials)
 
-            call.respond(userExists)
-            call.response.status(HttpStatusCode.OK)
+            if (result is MyResult.Success) call.respond(true)
+            else call.respond(false)
         }
     }
 

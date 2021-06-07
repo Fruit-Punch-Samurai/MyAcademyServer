@@ -6,6 +6,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
+import models.Credentials
 import models.Entity
 import models.PrivateUser
 import models.User
@@ -36,5 +37,9 @@ object Extensions {
 
     fun PrivateUser.toUser(): User {
         return User(this._id.cast(), this.name, this.rank)
+    }
+
+    fun PrivateUser.getCredentials(): Credentials {
+        return Credentials(this.name, this.password)
     }
 }
