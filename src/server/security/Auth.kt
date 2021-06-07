@@ -6,6 +6,7 @@ import kodein
 import org.kodein.di.generic.instance
 import server.security.SecurityConstants.REALM
 import server.security.SecurityConstants.REGULAR_USER_AUTH
+import utils.sealed.MyResult
 import java.security.MessageDigest
 
 object Auth {
@@ -16,7 +17,8 @@ object Auth {
         MessageDigest.getInstance("MD5").digest(str.toByteArray(Charsets.UTF_8))
 
     suspend fun Authentication.Configuration.setupRegularUserAuth() {
-        val usersList = repo.getAllPrivateUsers().associate { it.name to getMd5Digest("${it.name}:$REALM:${it.password}") }
+        val usersList =
+            (repo.getAllPrivateUsers() as MyResult.Success).value.associate { it.name to getMd5Digest("${it.name}:$REALM:${it.password}") }
         digest(REGULAR_USER_AUTH) {
             realm = REALM
             digestProvider { userName, _ ->

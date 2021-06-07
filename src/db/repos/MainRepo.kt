@@ -56,11 +56,61 @@ class MainRepo {
     }
 
 
-    suspend fun getAllPrivateUsers() = pUsersRepo.getAllPrivateUsers()
-    suspend fun getPrivateUser(id: String) = pUsersRepo.getPrivateUser(id)
-    suspend fun addPrivateUser(privateUser: PrivateUser) = pUsersRepo.addPrivateUser(privateUser).wasAcknowledged()
-    suspend fun deletePrivateUser(id: String) = pUsersRepo.deletePrivateUser(id) != null
-    suspend fun getPrivateUser(name: String, pass: String) = pUsersRepo.getPrivateUser(name, pass)
+    suspend fun getAllPrivateUsers(): MyResult<List<PrivateUser>> {
+        return try {
+            val list = pUsersRepo.getAllPrivateUsers()
+            MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun getPrivateUser(id: String): MyResult<PrivateUser> {
+        return try {
+            val privateUser = pUsersRepo.getPrivateUser(id)
+            return if (privateUser == null) MyResult.Failure(msg = "User not found")
+            else MyResult.Success(privateUser)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun getPrivateUser(cred: Credentials): MyResult<PrivateUser> {
+        return try {
+            val privateUser = pUsersRepo.getPrivateUser(cred)
+            return if (privateUser == null) MyResult.Failure(msg = "User not found")
+            else MyResult.Success(privateUser)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun addPrivateUser(privateUser: PrivateUser): MyResult<Unit> {
+        return try {
+            val acknowledged = pUsersRepo.addPrivateUser(privateUser).wasAcknowledged()
+            if (acknowledged) MyResult.Success(Unit) else MyResult.Failure()
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun updatePrivateUser(privateUser: PrivateUser): MyResult<Unit> {
+        return try {
+            val acknowledged = pUsersRepo.updatePrivateUser(privateUser).wasAcknowledged()
+            if (acknowledged) MyResult.Success(Unit) else MyResult.Failure()
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun deletePrivateUser(id: String): MyResult<Unit> {
+        return try {
+            val privateUser = pUsersRepo.deletePrivateUser(id)
+            if (privateUser != null) MyResult.Success(Unit) else MyResult.Failure(msg = "Delete failed")
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
 
 
     suspend fun getAllStudents(): MyResult<List<Student>> {

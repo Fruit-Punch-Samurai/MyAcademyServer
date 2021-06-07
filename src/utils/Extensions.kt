@@ -7,6 +7,8 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 import models.Entity
+import models.PrivateUser
+import models.User
 import org.litote.kmongo.id.serialization.IdKotlinXSerializationModule
 
 object Extensions {
@@ -32,4 +34,7 @@ object Extensions {
         return jsonElement.toEntity() as T
     }
 
+    fun PrivateUser.toUser(): User {
+        return User(this._id.cast(), this.name, this.rank)
+    }
 }

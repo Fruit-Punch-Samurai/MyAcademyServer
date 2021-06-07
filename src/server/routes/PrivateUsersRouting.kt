@@ -11,10 +11,11 @@ import models.PrivateUser
 import org.kodein.di.generic.instance
 import server.routes.RoutingConstants.ID_PARAM_NAME
 import server.routes.RoutingConstants.ID_PARAM_ROUTE
+import utils.sealed.MyResult
 
 object PrivateUsersRouting {
 
-    //TODO: Admin auth to add and delete and see all
+    //TODO: Admin auth to add and delete and see all, or just make another app.
     //TODO: Add in 2 places
 
     private val repo: MainRepo by kodein.instance()
@@ -28,16 +29,14 @@ object PrivateUsersRouting {
     }
 
     private fun Route.setupGetRequests() {
+        //TODO: remove get all request
         get {
-            call.respond(repo.getAllPrivateUsers())
+            call.respond((repo.getAllPrivateUsers() as MyResult.Success).value)
         }
-
         get(ID_PARAM_ROUTE) {
-            val privateUser = repo.getPrivateUser(call.parameters[ID_PARAM_NAME]!!)
-
-            if (privateUser != null) call.respond(privateUser)
-            else call.response.status(HttpStatusCode.NotFound)
-
+            val privateUser = call.parameters[ID_PARAM_NAME]?.let { id -> repo.getPrivateUser(id) }
+            if (privateUser is MyResult.Success) call.response.status(HttpStatusCode.OK)
+            else call.response.status(HttpStatusCode.Unauthorized)
         }
     }
 
@@ -53,9 +52,10 @@ object PrivateUsersRouting {
     private fun Route.setupDeleteRequests() {
         delete(ID_PARAM_ROUTE) {
             val id = call.parameters[ID_PARAM_NAME] ?: return@delete
-            call.defaultTextContentType(ContentType.Text.Plain)
-            call.respond(repo.deletePrivateUser(id))
-            call.response.status(HttpStatusCode.OK)
+            val result = repo.deletePrivateUser(id)
+
+            if (result is MyResult.Success) call.response.status(HttpStatusCode.OK)
+            else call.response.status(HttpStatusCode.NotAcceptable)
         }
 
     }

@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Credentials(
-    val name: String? = null,
-    val password: String? = null
+    val name: String,
+    val password: String
 ) : Entity

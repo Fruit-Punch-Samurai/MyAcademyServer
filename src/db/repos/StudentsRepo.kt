@@ -7,7 +7,6 @@ import models.Student
 import org.bson.types.ObjectId
 import org.kodein.di.generic.instance
 import org.litote.kmongo.coroutine.CoroutineDatabase
-import org.litote.kmongo.coroutine.updateOne
 import org.litote.kmongo.eq
 import org.litote.kmongo.id.toId
 
@@ -49,7 +48,7 @@ class StudentsRepo {
 
     suspend fun addStudent(student: Student) = col.insertOne(student)
 
-    suspend fun updateStudent(student: Student) = col.updateOne(student)
+    suspend fun updateStudent(student: Student) = col.updateOne(Student::_id eq student._id, student)
 
     suspend fun deleteStudent(student: Student) = deleteStudent(student._id.toString())
 

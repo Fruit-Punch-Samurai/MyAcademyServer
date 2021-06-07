@@ -25,10 +25,8 @@ object LoginRouting {
     private fun Route.setupPostRequests() {
         post {
             val credentials = call.receive<Credentials>()
-            if (credentials.name.isNullOrEmpty()) return@post
-            if (credentials.password.isNullOrEmpty()) return@post
 
-            val userExists = repo.getPrivateUser(credentials.name, credentials.password) != null
+            val userExists = repo.getPrivateUser(credentials)
 
             call.respond(userExists)
             call.response.status(HttpStatusCode.OK)

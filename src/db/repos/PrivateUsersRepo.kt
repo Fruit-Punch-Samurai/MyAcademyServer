@@ -22,7 +22,12 @@ class PrivateUsersRepo {
     suspend fun getPrivateUser(name: String, pass: String) =
         col.findOne(Credentials::name eq name, Credentials::password eq pass)
 
+    suspend fun getPrivateUser(cred: Credentials) = getPrivateUser(cred.name, cred.password)
+
     suspend fun addPrivateUser(privateUser: PrivateUser) = col.insertOne(privateUser)
+
+    suspend fun updatePrivateUser(privateUser: PrivateUser) =
+        col.updateOne(PrivateUser::_id eq privateUser._id, privateUser)
 
     suspend fun deletePrivateUser(privateUser: PrivateUser) = deletePrivateUser(privateUser._id.toString())
 

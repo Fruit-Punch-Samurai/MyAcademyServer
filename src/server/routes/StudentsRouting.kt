@@ -38,7 +38,6 @@ object StudentsRouting {
         }
     }
 
-
     private fun Route.setupPostRequests() {
         post {
             val student = call.receive<Student>()
@@ -59,7 +58,7 @@ object StudentsRouting {
         post(RoutingConstants.SEARCH_ROUTE) {
             val student = call.receive<Student>()
             val result = repo.searchStudents(student)
-            
+
             if (result is MyResult.Success) call.respond(result.value)
             else call.response.status(HttpStatusCode.NotFound)
         }

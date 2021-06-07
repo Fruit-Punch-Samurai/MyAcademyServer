@@ -34,7 +34,7 @@ object Serializers {
     }
 
     object RankTypeSerializer : KSerializer<RankType> {
-        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("type", PrimitiveKind.STRING)
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("rank", PrimitiveKind.STRING)
 
         override fun serialize(encoder: Encoder, value: RankType) {
             when (value) {
