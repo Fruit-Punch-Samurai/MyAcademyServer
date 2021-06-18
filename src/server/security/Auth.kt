@@ -17,18 +17,19 @@ object Auth {
         MessageDigest.getInstance("MD5").digest(str.toByteArray(Charsets.UTF_8))
 
     suspend fun Authentication.Configuration.setupRegularUserAuth() {
-        val usersList =
-            (repo.getAllPrivateUsers() as MyResult.Success).value.associate { it.name to getMd5Digest("${it.name}:$REALM:${it.password}") }
+        var usersList = emptyMap<String, ByteArray>()
+        val result = repo.getAllPrivateUsers()
+
+        if (result is MyResult.Success) {
+            usersList = result.value.associate { it.name to getMd5Digest("${it.name}:$REALM:${it.password}") }
+        }
+
         digest(REGULAR_USER_AUTH) {
             realm = REALM
             digestProvider { userName, _ ->
                 usersList[userName]
             }
         }
-    }
-
-    fun Authentication.Configuration.setupAdminUserAuth() {
-
     }
 
 }

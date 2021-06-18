@@ -28,7 +28,7 @@ object LoginRouting {
 
             val result = repo.getPrivateUser(credentials)
 
-            if (result is MyResult.Success) call.respond(true)
+            if (result is MyResult.Success) call.respond(result.value._id.toString())
             else call.respond(false)
         }
     }
