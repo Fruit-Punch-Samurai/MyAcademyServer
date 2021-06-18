@@ -209,8 +209,8 @@ class MainRepo {
 
     suspend fun updateTeacher(teacher: Teacher): MyResult<Unit> {
         return try {
-            val acknowledged = teachersRepo.updateTeacher(teacher).wasAcknowledged()
-            if (acknowledged) MyResult.Success(Unit) else MyResult.Failure()
+            val modifiedCount = teachersRepo.updateTeacher(teacher).modifiedCount
+            if (modifiedCount == 1L) MyResult.Success(Unit) else MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
