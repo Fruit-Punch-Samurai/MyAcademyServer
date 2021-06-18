@@ -44,7 +44,7 @@ object TeachersRouting {
             val teacher = call.receive<Teacher>()
             val result = repo.addTeacher(teacher)
 
-            if (result is MyResult.Success) call.response.status(HttpStatusCode.Accepted)
+            if (result is MyResult.Success) call.respond(result.value)
             else call.response.status(HttpStatusCode.NotAcceptable)
         }
 

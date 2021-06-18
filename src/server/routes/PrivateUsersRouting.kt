@@ -15,8 +15,7 @@ import utils.sealed.MyResult
 
 object PrivateUsersRouting {
 
-    //TODO: Admin auth to add and delete and see all, or just make another app.
-    //TODO: Add in 2 places
+    //TODO: Just make another app and add it in 2 places
 
     private val repo: MainRepo by kodein.instance()
 
@@ -29,7 +28,6 @@ object PrivateUsersRouting {
     }
 
     private fun Route.setupGetRequests() {
-        //TODO: remove get all request
         get {
             call.respond((repo.getAllPrivateUsers() as MyResult.Success).value)
         }

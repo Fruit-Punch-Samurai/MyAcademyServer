@@ -20,8 +20,7 @@ class MainRepo {
     suspend fun getAllUsers(): MyResult<List<User>> {
         return try {
             val list = usersRepo.getAllUsers()
-            if (list.isEmpty()) MyResult.Failure(msg = "No users")
-            else MyResult.Success(list)
+            MyResult.Success(list)
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
@@ -59,6 +58,15 @@ class MainRepo {
     suspend fun getAllPrivateUsers(): MyResult<List<PrivateUser>> {
         return try {
             val list = pUsersRepo.getAllPrivateUsers()
+            MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun getAllAdminPrivateUsers(): MyResult<List<PrivateUser>> {
+        return try {
+            val list = pUsersRepo.getAllAdminPrivateUsers()
             MyResult.Success(list)
         } catch (e: Exception) {
             MyResult.Failure(e)
@@ -141,10 +149,10 @@ class MainRepo {
         }
     }
 
-    suspend fun addStudent(student: Student): MyResult<Unit> {
+    suspend fun addStudent(student: Student): MyResult<String> {
         return try {
-            val acknowledged = studentsRepo.addStudent(student).wasAcknowledged()
-            if (acknowledged) MyResult.Success(Unit) else MyResult.Failure()
+            val id = studentsRepo.addStudent(student).insertedId?.asString()?.value
+            id?.let { MyResult.Success(it) } ?: MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
@@ -172,8 +180,7 @@ class MainRepo {
     suspend fun getAllTeachers(): MyResult<List<Teacher>> {
         return try {
             val list = teachersRepo.getAllTeachers()
-            if (list.isEmpty()) MyResult.Failure(msg = "No teachers")
-            else MyResult.Success(list)
+            MyResult.Success(list)
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
@@ -198,10 +205,10 @@ class MainRepo {
         }
     }
 
-    suspend fun addTeacher(teacher: Teacher): MyResult<Unit> {
+    suspend fun addTeacher(teacher: Teacher): MyResult<String> {
         return try {
-            val acknowledged = teachersRepo.addTeacher(teacher).wasAcknowledged()
-            if (acknowledged) MyResult.Success(Unit) else MyResult.Failure()
+            val id = teachersRepo.addTeacher(teacher).insertedId?.asString()?.value
+            id?.let { MyResult.Success(it) } ?: MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
@@ -225,8 +232,32 @@ class MainRepo {
         }
     }
 
-    suspend fun getAllHistories() = historyRepo.getAllHistories()
-    suspend fun getHistory(id: String) = historyRepo.getHistory(id)
-    suspend fun addHistory(history: History) = historyRepo.addHistory(history).wasAcknowledged()
+    suspend fun getAllHistories(): MyResult<List<History>> {
+        return try {
+            val result = historyRepo.getAllHistories()
+            MyResult.Success(result)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun getHistory(id: String): MyResult<History> {
+        return try {
+            val result = historyRepo.getHistory(id)
+            result?.let { MyResult.Success(it) } ?: MyResult.Failure(msg = "History not found")
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+
+    }
+
+    suspend fun addHistory(history: History): MyResult<String> {
+        return try {
+            val id = historyRepo.addHistory(history).insertedId?.asString()?.value
+            id?.let { MyResult.Success(it) } ?: MyResult.Failure()
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
 
 }

@@ -9,6 +9,7 @@ import org.kodein.di.generic.instance
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 import org.litote.kmongo.id.toId
+import utils.sealed.RankType
 
 class PrivateUsersRepo {
 
@@ -16,6 +17,8 @@ class PrivateUsersRepo {
     private val col = db.getCollection<PrivateUser>(DBConstants.PRIVATE_USERS_COL_NAME)
 
     suspend fun getAllPrivateUsers() = col.find().toList()
+
+    suspend fun getAllAdminPrivateUsers() = col.find().filter(PrivateUser::rank eq RankType.Admin).toList()
 
     suspend fun getPrivateUser(id: String) = col.findOneById(ObjectId(id))
 

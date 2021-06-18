@@ -6,6 +6,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import utils.sealed.EntityType
 import utils.sealed.HistoryType
 import utils.sealed.RankType
 
@@ -29,6 +30,26 @@ object Serializers {
                 "delete" -> HistoryType.Delete
                 "update" -> HistoryType.Update
                 else -> HistoryType.Other
+            }
+        }
+    }
+
+    object EntityTypeSerializer : KSerializer<EntityType> {
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("entityType", PrimitiveKind.STRING)
+
+        override fun serialize(encoder: Encoder, value: EntityType) {
+            when (value) {
+                EntityType.Student -> encoder.encodeString("student")
+                EntityType.Teacher -> encoder.encodeString("teacher")
+                EntityType.Other -> encoder.encodeString("other")
+            }
+        }
+
+        override fun deserialize(decoder: Decoder): EntityType {
+            return when (decoder.decodeString()) {
+                "student" -> EntityType.Student
+                "teacher" -> EntityType.Teacher
+                else -> EntityType.Other
             }
         }
     }

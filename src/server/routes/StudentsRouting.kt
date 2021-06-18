@@ -43,7 +43,7 @@ object StudentsRouting {
             val student = call.receive<Student>()
             val result = repo.addStudent(student)
 
-            if (result is MyResult.Success) call.response.status(HttpStatusCode.Accepted)
+            if (result is MyResult.Success) call.respond(result.value)
             else call.response.status(HttpStatusCode.NotAcceptable)
         }
 

@@ -9,6 +9,7 @@ import io.ktor.routing.*
 import kodein
 import models.History
 import org.kodein.di.generic.instance
+import utils.sealed.MyResult
 
 object HistoryRouting {
 
@@ -23,15 +24,16 @@ object HistoryRouting {
 
     private fun Route.setupGetRequests() {
         get {
-            call.respond(repo.getAllHistories())
+            val result = repo.getAllHistories()
+            if (result is MyResult.Success) call.respond(result.value)
+            else call.response.status(HttpStatusCode.NotFound)
         }
 
         get(RoutingConstants.ID_PARAM_ROUTE) {
-            val history = repo.getHistory(call.parameters[RoutingConstants.ID_PARAM_NAME]!!)
+            val result = repo.getHistory(call.parameters[RoutingConstants.ID_PARAM_NAME]!!)
 
-            if (history != null) call.respond(history)
+            if (result is MyResult.Success) call.respond(result.value)
             else call.response.status(HttpStatusCode.NotFound)
-
         }
     }
 
@@ -39,9 +41,12 @@ object HistoryRouting {
     private fun Route.setupPostRequests() {
         post {
             val history = call.receive<History>()
-            call.respond(repo.addHistory(history))
-            call.response.status(HttpStatusCode.OK)
+            val result = repo.addHistory(history)
+
+            if (result is MyResult.Success) call.respond(result.value)
+            else call.response.status(HttpStatusCode.NotAcceptable)
         }
+
     }
 
 }
