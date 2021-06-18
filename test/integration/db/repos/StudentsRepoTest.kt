@@ -41,6 +41,16 @@ class StudentsRepoTest {
 
     @Order(3)
     @Test
+    fun test_update_non_existing_student() {
+        runBlocking {
+            val result = repo.updateStudent(student.copy(ObjectId("60a81be79827071039aac048").toId()))
+            println(result.modifiedCount)
+            assertTrue(result.matchedCount == 0L)
+        }
+    }
+
+    @Order(4)
+    @Test
     fun test_get_all_students() {
         runBlocking {
             val studentsList = repo.getAllStudents()
@@ -49,7 +59,7 @@ class StudentsRepoTest {
         }
     }
 
-    @Order(4)
+    @Order(5)
     @Test
     fun test_search_for_existing_students_1() {
         runBlocking {
@@ -59,7 +69,7 @@ class StudentsRepoTest {
         }
     }
 
-    @Order(5)
+    @Order(6)
     @Test
     fun test_search_for_existing_students_2() {
         runBlocking {
@@ -69,7 +79,7 @@ class StudentsRepoTest {
         }
     }
 
-    @Order(6)
+    @Order(7)
     @Test
     fun test_search_for_non_existing_students() {
         runBlocking {
@@ -79,12 +89,12 @@ class StudentsRepoTest {
         }
     }
 
-    @Order(7)
+    @Order(8)
     @Test
     fun test_delete_student() {
         runBlocking {
             val result = repo.deleteStudent(student)
-            assertTrue(result!=null)
+            assertTrue(result != null)
         }
     }
 

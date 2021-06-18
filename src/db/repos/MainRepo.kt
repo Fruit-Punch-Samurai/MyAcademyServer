@@ -7,9 +7,9 @@ import utils.sealed.MyResult
 
 class MainRepo {
 
-    //TODO: Sealed class for Result, can be success or failure
     //TODO: Make little Repos private + DI
     //TODO: Delete requests return true even if Entity doesn't exist
+    //TODO: Updating my need to be changed
 
     private val pUsersRepo: PrivateUsersRepo by kodein.instance()
     private val usersRepo: UsersRepo by kodein.instance()
@@ -135,8 +135,7 @@ class MainRepo {
     suspend fun searchStudents(student: Student): MyResult<List<Student>> {
         return try {
             val list = studentsRepo.searchForStudents(student)
-            return if (list.isEmpty()) MyResult.Failure(msg = "Students not found")
-            else MyResult.Success(list)
+            MyResult.Success(list)
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
@@ -153,8 +152,8 @@ class MainRepo {
 
     suspend fun updateStudent(student: Student): MyResult<Unit> {
         return try {
-            val acknowledged = studentsRepo.updateStudent(student).wasAcknowledged()
-            if (acknowledged) MyResult.Success(Unit) else MyResult.Failure()
+            val modifiedCount = studentsRepo.updateStudent(student).modifiedCount
+            if (modifiedCount == 1L) MyResult.Success(Unit) else MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
@@ -193,8 +192,7 @@ class MainRepo {
     suspend fun searchTeachers(teacher: Teacher): MyResult<List<Teacher>> {
         return try {
             val list = teachersRepo.searchForTeachers(teacher)
-            return if (list.isEmpty()) MyResult.Failure(msg = "Teachers not found")
-            else MyResult.Success(list)
+            MyResult.Success(list)
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
@@ -230,6 +228,5 @@ class MainRepo {
     suspend fun getAllHistories() = historyRepo.getAllHistories()
     suspend fun getHistory(id: String) = historyRepo.getHistory(id)
     suspend fun addHistory(history: History) = historyRepo.addHistory(history).wasAcknowledged()
-    suspend fun deleteHistory(id: String) = historyRepo.deleteHistory(id).wasAcknowledged()
 
 }

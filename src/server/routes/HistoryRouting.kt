@@ -18,7 +18,6 @@ object HistoryRouting {
         route(RoutingConstants.HISTORY_ROUTE) {
             setupGetRequests()
             setupPostRequests()
-            setupDeleteRequests()
         }
     }
 
@@ -43,16 +42,6 @@ object HistoryRouting {
             call.respond(repo.addHistory(history))
             call.response.status(HttpStatusCode.OK)
         }
-    }
-
-    private fun Route.setupDeleteRequests() {
-        delete(RoutingConstants.ID_PARAM_ROUTE) {
-            val id = call.parameters[RoutingConstants.ID_PARAM_NAME] ?: return@delete
-            call.defaultTextContentType(ContentType.Text.Plain)
-            call.respond(repo.deleteHistory(id))
-            call.response.status(HttpStatusCode.OK)
-        }
-
     }
 
 }

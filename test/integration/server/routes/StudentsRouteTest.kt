@@ -21,8 +21,9 @@ import kotlin.test.assertTrue
 class StudentsRouteTest {
 
     private val studentsPath = RoutingConstants.ROOT_ROUTE + RoutingConstants.STUDENTS_ROUTE
-    private val studentId = ObjectId("60a81be79827071039aac044").toId<Student>()
-    private val student = Student(studentId, "namr", "first", "place")
+    private val studentId1 = ObjectId("60a81be79827071039aac044").toId<Student>()
+    private val studentId2 = ObjectId("60a81be79827071039aac023").toId<Student>()
+    private val student = Student(studentId1, "namr", "first", "place")
 
     @Order(1)
     @Test
@@ -40,7 +41,7 @@ class StudentsRouteTest {
     @Order(2)
     @Test
     fun test_post_update_request(): Unit = withTestApplication(Application::module) {
-        val call = handleRequest(HttpMethod.Post, "$studentsPath/$studentId") {
+        val call = handleRequest(HttpMethod.Post, "$studentsPath/$studentId1") {
             addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             setBody(student.copy(name = "nono").toJsonElement().toString())
         }
@@ -50,12 +51,24 @@ class StudentsRouteTest {
         }
     }
 
+    @Test
+    fun test_post_update_non_existing_request(): Unit = withTestApplication(Application::module) {
+        val call = handleRequest(HttpMethod.Post, "$studentsPath/$studentId2") {
+            addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+            setBody(student.copy(name = "nono").toJsonElement().toString())
+        }
+
+        with(call) {
+            assertEquals(HttpStatusCode.NotAcceptable, response.status())
+        }
+    }
+
     @Order(3)
     @Test
     fun test_post_search_request_1(): Unit = withTestApplication(Application::module) {
         val call = handleRequest(HttpMethod.Post, "$studentsPath${RoutingConstants.SEARCH_ROUTE}") {
             addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-            setBody(Student(name = "no",firstName ="st" ).toJsonElement().toString())
+            setBody(Student(name = "no", firstName = "st").toJsonElement().toString())
         }
 
         with(call) {
@@ -88,7 +101,7 @@ class StudentsRouteTest {
     @Order(5)
     @Test
     fun test_get_one_request() = withTestApplication(Application::module) {
-        with(handleRequest(HttpMethod.Get, "$studentsPath/$studentId")) {
+        with(handleRequest(HttpMethod.Get, "$studentsPath/$studentId1")) {
             assertEquals(HttpStatusCode.OK, response.status())
         }
     }
@@ -104,7 +117,7 @@ class StudentsRouteTest {
     @Order(7)
     @Test
     fun test_deleteOne_request() = withTestApplication(Application::module) {
-        val call = handleRequest(HttpMethod.Delete, "$studentsPath/$studentId")
+        val call = handleRequest(HttpMethod.Delete, "$studentsPath/$studentId1")
 
         with(call) {
             assertEquals(HttpStatusCode.OK, response.status())
