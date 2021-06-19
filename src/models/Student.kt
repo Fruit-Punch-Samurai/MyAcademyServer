@@ -17,5 +17,5 @@ data class Student(
     val email: String? = null,
     val phone: String? = null,
     val notes: String? = null,
-    val date: LocalDateTime? = null,
+    var date: LocalDateTime? = null,
 ) : Entity

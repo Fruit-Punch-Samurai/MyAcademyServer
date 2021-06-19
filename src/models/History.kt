@@ -18,5 +18,5 @@ data class History(
     val text: String? = null,
     val userID: String? = null,
     val objectID: String? = null,
-    val date: LocalDateTime? = null,
+    var date: LocalDateTime? = null,
 ) : Entity

@@ -17,5 +17,5 @@ data class Teacher(
     var email: String? = null,
     var phone: String? = null,
     var notes: String? = null,
-    val date: LocalDateTime? = null
+    var date: LocalDateTime? = null
 ) : Entity

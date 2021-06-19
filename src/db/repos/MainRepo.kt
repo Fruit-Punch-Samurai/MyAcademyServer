@@ -3,6 +3,7 @@ package db.repos
 import kodein
 import models.*
 import org.kodein.di.generic.instance
+import utils.DateManager
 import utils.sealed.MyResult
 
 class MainRepo {
@@ -13,6 +14,7 @@ class MainRepo {
     private val teachersRepo: TeachersRepo by kodein.instance()
     private val historyRepo: HistoryRepo by kodein.instance()
 
+    //region Users
     suspend fun getAllUsers(): MyResult<List<User>> {
         return try {
             val list = usersRepo.getAllUsers()
@@ -50,7 +52,9 @@ class MainRepo {
         }
     }
 
+    //endregion
 
+    //region PrivateUsers
     suspend fun getAllPrivateUsers(): MyResult<List<PrivateUser>> {
         return try {
             val list = pUsersRepo.getAllPrivateUsers()
@@ -116,7 +120,9 @@ class MainRepo {
         }
     }
 
+    //endregion
 
+    //region Students
     suspend fun getAllStudents(): MyResult<List<Student>> {
         return try {
             val list = studentsRepo.getAllStudents()
@@ -147,7 +153,9 @@ class MainRepo {
 
     suspend fun addStudent(student: Student): MyResult<String> {
         return try {
-            val id = studentsRepo.addStudent(student).insertedId?.asObjectId()?.value
+            val id = studentsRepo.addStudent(student.apply {
+                date = DateManager.getCurrentLocalDate()
+            }).insertedId?.asObjectId()?.value
             id?.let { MyResult.Success(id.toString()) } ?: MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
@@ -172,7 +180,9 @@ class MainRepo {
         }
     }
 
+    //endregion
 
+    //region Teachers
     suspend fun getAllTeachers(): MyResult<List<Teacher>> {
         return try {
             val list = teachersRepo.getAllTeachers()
@@ -203,7 +213,9 @@ class MainRepo {
 
     suspend fun addTeacher(teacher: Teacher): MyResult<String> {
         return try {
-            val id = teachersRepo.addTeacher(teacher).insertedId?.asObjectId()?.value
+            val id = teachersRepo.addTeacher(teacher.apply {
+                date = DateManager.getCurrentLocalDate()
+            }).insertedId?.asObjectId()?.value
             id?.let { MyResult.Success(id.toString()) } ?: MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
@@ -228,6 +240,9 @@ class MainRepo {
         }
     }
 
+    //endregion
+
+    //region History
     suspend fun getAllHistories(): MyResult<List<History>> {
         return try {
             val result = historyRepo.getAllHistories()
@@ -249,11 +264,14 @@ class MainRepo {
 
     suspend fun addHistory(history: History): MyResult<String> {
         return try {
-            val id = historyRepo.addHistory(history).insertedId?.asObjectId()?.value
+            val id = historyRepo.addHistory(history.apply {
+                date = DateManager.getCurrentLocalDate()
+            }).insertedId?.asObjectId()?.value
             id?.let { MyResult.Success(id.toString()) } ?: MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
     }
+    //endregion
 
 }
