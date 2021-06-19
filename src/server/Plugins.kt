@@ -7,7 +7,6 @@ import io.ktor.serialization.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.litote.kmongo.id.serialization.IdKotlinXSerializationModule
-import server.security.Auth.setupAdminUserAuth
 import server.security.Auth.setupRegularUserAuth
 
 object Plugins {
@@ -24,7 +23,6 @@ object Plugins {
         install(Authentication) {
             runBlocking {
                 setupRegularUserAuth()
-                setupAdminUserAuth()
             }
         }
     }

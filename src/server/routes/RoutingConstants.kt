@@ -2,8 +2,6 @@ package server.routes
 
 object RoutingConstants {
 
-    //TODO: Create sealed class with parameters?
-
     const val ROOT_ROUTE = "/bazgalonia"
     const val USERS_ROUTE = "/users"
     const val PRIVATE_USERS_ROUTE = "/privateUsers"

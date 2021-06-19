@@ -12,7 +12,6 @@ fun main(args: Array<String>): Unit = EngineMain.main(args)
 //TODO: No weak passwords
 //TODO: Change hashing algo && reverse and ROT
 //TODO: Hide response headers
-//TODO: Fix timezone issues || use $current_date
 //TODO: UI side: option to enter DB credentials in app, and encrypt them with SerialID
 //TODO: SSL for HTTP/2, HTTPS maybe?
 //TODO: Block external headers

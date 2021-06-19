@@ -7,10 +7,6 @@ import utils.sealed.MyResult
 
 class MainRepo {
 
-    //TODO: Make little Repos private + DI
-    //TODO: Delete requests return true even if Entity doesn't exist
-    //TODO: Updating my need to be changed
-
     private val pUsersRepo: PrivateUsersRepo by kodein.instance()
     private val usersRepo: UsersRepo by kodein.instance()
     private val studentsRepo: StudentsRepo by kodein.instance()
@@ -151,8 +147,8 @@ class MainRepo {
 
     suspend fun addStudent(student: Student): MyResult<String> {
         return try {
-            val id = studentsRepo.addStudent(student).insertedId?.asString()?.value
-            id?.let { MyResult.Success(it) } ?: MyResult.Failure()
+            val id = studentsRepo.addStudent(student).insertedId?.asObjectId()?.value
+            id?.let { MyResult.Success(id.toString()) } ?: MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
@@ -207,8 +203,8 @@ class MainRepo {
 
     suspend fun addTeacher(teacher: Teacher): MyResult<String> {
         return try {
-            val id = teachersRepo.addTeacher(teacher).insertedId?.asString()?.value
-            id?.let { MyResult.Success(it) } ?: MyResult.Failure()
+            val id = teachersRepo.addTeacher(teacher).insertedId?.asObjectId()?.value
+            id?.let { MyResult.Success(id.toString()) } ?: MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
         }
@@ -253,8 +249,8 @@ class MainRepo {
 
     suspend fun addHistory(history: History): MyResult<String> {
         return try {
-            val id = historyRepo.addHistory(history).insertedId?.asString()?.value
-            id?.let { MyResult.Success(it) } ?: MyResult.Failure()
+            val id = historyRepo.addHistory(history).insertedId?.asObjectId()?.value
+            id?.let { MyResult.Success(id.toString()) } ?: MyResult.Failure()
         } catch (e: Exception) {
             MyResult.Failure(e)
         }

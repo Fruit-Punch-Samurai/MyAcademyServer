@@ -15,7 +15,6 @@ import utils.sealed.MyResult
 
 object UsersRouting {
 
-    //TODO: Admin auth to add and delete
     //TODO: Add in 2 places
     private val repo: MainRepo by kodein.instance()
 
