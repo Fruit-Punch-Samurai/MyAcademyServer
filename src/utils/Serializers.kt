@@ -19,7 +19,7 @@ object Serializers {
             when (value) {
                 HistoryType.Add -> encoder.encodeString("add")
                 HistoryType.Delete -> encoder.encodeString("delete")
-                HistoryType.Update -> encoder.encodeString("update")
+                HistoryType.Modify -> encoder.encodeString("modify")
                 else -> encoder.encodeString("other")
             }
         }
@@ -28,7 +28,7 @@ object Serializers {
             return when (decoder.decodeString()) {
                 "add" -> HistoryType.Add
                 "delete" -> HistoryType.Delete
-                "update" -> HistoryType.Update
+                "modify" -> HistoryType.Modify
                 else -> HistoryType.Other
             }
         }
