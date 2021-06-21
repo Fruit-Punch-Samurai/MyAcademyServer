@@ -8,6 +8,7 @@ object RoutingConstants {
     const val LOGIN_ROUTE = "/login"
     const val STUDENTS_ROUTE = "/students"
     const val TEACHERS_ROUTE = "/teachers"
+    const val PAYMENTS_ROUTE = "/payments"
     const val HISTORY_ROUTE = "/history"
 
     const val SEARCH_ROUTE = "/search"

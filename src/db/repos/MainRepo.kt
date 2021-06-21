@@ -8,12 +8,11 @@ import utils.sealed.MyResult
 
 class MainRepo {
 
-    //TODO: Payments
-
     private val pUsersRepo: PrivateUsersRepo by kodein.instance()
     private val usersRepo: UsersRepo by kodein.instance()
     private val studentsRepo: StudentsRepo by kodein.instance()
     private val teachersRepo: TeachersRepo by kodein.instance()
+    private val paymentsRepo: PaymentsRepo by kodein.instance()
     private val historyRepo: HistoryRepo by kodein.instance()
 
     //region Users
@@ -255,6 +254,75 @@ class MainRepo {
         return try {
             val teacher = teachersRepo.deleteTeacher(id)
             if (teacher != null) MyResult.Success(Unit) else MyResult.Failure(msg = "Delete failed")
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    //endregion
+
+    //region Payments
+    suspend fun getAllPayments(): MyResult<List<Payment>> {
+        return try {
+            val list = paymentsRepo.getAllPayments()
+            MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun getLastPayments(): MyResult<List<Payment>> {
+        return try {
+            val list = paymentsRepo.getLastPayments()
+            MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun getPayment(id: String): MyResult<Payment> {
+        return try {
+            val payment = paymentsRepo.getPayment(id)
+            return if (payment == null) MyResult.Failure(msg = "Payment not found")
+            else MyResult.Success(payment)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun searchPayments(payment: Payment): MyResult<List<Payment>> {
+        return try {
+            val list = paymentsRepo.searchForPayments(payment)
+            MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun addPayment(payment: Payment): MyResult<String> {
+        return try {
+            val id = paymentsRepo.addPayment(payment.apply {
+                date = DateManager.getCurrentLocalDate()
+            }).insertedId?.asObjectId()?.value
+            id?.let { MyResult.Success(id.toString()) } ?: MyResult.Failure()
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun updatePayment(payment: Payment): MyResult<Unit> {
+        return try {
+            val modifiedCount = paymentsRepo.updatePayment(payment).modifiedCount
+            if (modifiedCount == 1L) MyResult.Success(Unit) else MyResult.Failure()
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun deletePayment(id: String): MyResult<Unit> {
+        return try {
+            val payment = paymentsRepo.deletePayment(id)
+            if (payment != null) MyResult.Success(Unit) else MyResult.Failure(msg = "Delete failed")
         } catch (e: Exception) {
             MyResult.Failure(e)
         }

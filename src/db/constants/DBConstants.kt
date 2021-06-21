@@ -8,5 +8,6 @@ object DBConstants {
     const val HISTORY_COL_NAME = "History"
     const val STUDENTS_COL_NAME = "Students"
     const val TEACHERS_COL_NAME = "Teachers"
+    const val PAYMENTS_COL_NAME = "Payments"
 
 }

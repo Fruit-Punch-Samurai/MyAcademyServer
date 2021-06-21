@@ -18,6 +18,7 @@ object DependencyInjection {
             bind<PrivateUsersRepo>() with singleton { PrivateUsersRepo() }
             bind<TeachersRepo>() with singleton { TeachersRepo() }
             bind<StudentsRepo>() with singleton { StudentsRepo() }
+            bind<PaymentsRepo>() with singleton { PaymentsRepo() }
             bind<HistoryRepo>() with singleton { HistoryRepo() }
             bind<MainRepo>() with singleton { MainRepo() }
         }

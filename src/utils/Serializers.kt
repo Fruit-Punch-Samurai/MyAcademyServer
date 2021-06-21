@@ -8,9 +8,12 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import utils.sealed.EntityType
 import utils.sealed.HistoryType
+import utils.sealed.PaymentType
 import utils.sealed.RankType
 
 object Serializers {
+
+    //TODO: Use constant values in sealed classes for serializing
 
     object HistoryTypeSerializer : KSerializer<HistoryType> {
         override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("type", PrimitiveKind.STRING)
@@ -39,17 +42,39 @@ object Serializers {
 
         override fun serialize(encoder: Encoder, value: EntityType) {
             when (value) {
-                EntityType.Student -> encoder.encodeString("student")
-                EntityType.Teacher -> encoder.encodeString("teacher")
-                EntityType.Other -> encoder.encodeString("other")
+                is EntityType.Student -> encoder.encodeString(value.value)
+                is EntityType.Teacher -> encoder.encodeString(value.value)
+                is EntityType.Payment -> encoder.encodeString(value.value)
+                is EntityType.Other -> encoder.encodeString(value.value)
             }
         }
 
         override fun deserialize(decoder: Decoder): EntityType {
             return when (decoder.decodeString()) {
-                "student" -> EntityType.Student
-                "teacher" -> EntityType.Teacher
+                EntityType.Student.value -> EntityType.Student
+                EntityType.Teacher.value -> EntityType.Teacher
+                EntityType.Payment.value -> EntityType.Payment
                 else -> EntityType.Other
+            }
+        }
+    }
+
+    object PaymentTypeSerializer : KSerializer<PaymentType> {
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("paymentType", PrimitiveKind.STRING)
+
+        override fun serialize(encoder: Encoder, value: PaymentType) {
+            when (value) {
+                is PaymentType.Incoming -> encoder.encodeString(value.value)
+                is PaymentType.Outgoing -> encoder.encodeString(value.value)
+                is PaymentType.Other -> encoder.encodeString(value.value)
+            }
+        }
+
+        override fun deserialize(decoder: Decoder): PaymentType {
+            return when (decoder.decodeString()) {
+                PaymentType.Incoming.value -> PaymentType.Incoming
+                PaymentType.Outgoing.value -> PaymentType.Outgoing
+                else -> PaymentType.Other
             }
         }
     }
