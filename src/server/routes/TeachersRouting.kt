@@ -25,7 +25,7 @@ object TeachersRouting {
 
     private fun Route.setupGetRequests() {
         get {
-            val result = repo.getAllTeachers()
+            val result = repo.getLastTeachers()
             if (result is MyResult.Success) call.respond(result.value)
             else call.response.status(HttpStatusCode.NotFound)
         }

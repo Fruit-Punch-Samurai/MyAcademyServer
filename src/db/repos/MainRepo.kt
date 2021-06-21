@@ -8,6 +8,8 @@ import utils.sealed.MyResult
 
 class MainRepo {
 
+    //TODO: Payments
+
     private val pUsersRepo: PrivateUsersRepo by kodein.instance()
     private val usersRepo: UsersRepo by kodein.instance()
     private val studentsRepo: StudentsRepo by kodein.instance()
@@ -132,6 +134,15 @@ class MainRepo {
         }
     }
 
+    suspend fun getLastStudents(): MyResult<List<Student>> {
+        return try {
+            val list = studentsRepo.getLastStudents()
+            MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
     suspend fun getStudent(id: String): MyResult<Student> {
         return try {
             val student = studentsRepo.getStudent(id)
@@ -186,6 +197,15 @@ class MainRepo {
     suspend fun getAllTeachers(): MyResult<List<Teacher>> {
         return try {
             val list = teachersRepo.getAllTeachers()
+            MyResult.Success(list)
+        } catch (e: Exception) {
+            MyResult.Failure(e)
+        }
+    }
+
+    suspend fun getLastTeachers(): MyResult<List<Teacher>> {
+        return try {
+            val list = teachersRepo.getLastTeachers()
             MyResult.Success(list)
         } catch (e: Exception) {
             MyResult.Failure(e)

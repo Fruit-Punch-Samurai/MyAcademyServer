@@ -18,8 +18,7 @@ class TeachersRepo {
 
     suspend fun getAllTeachers() = col.find().toList()
 
-    //TODO: Sort by Date
-    suspend fun getLastTeachers() = col.find().limit(100).toList()
+    suspend fun getLastTeachers() = col.find().limit(100).descendingSort(Teacher::date).toList()
 
     suspend fun getTeacher(id: String) = col.findOneById(ObjectId(id))
 
