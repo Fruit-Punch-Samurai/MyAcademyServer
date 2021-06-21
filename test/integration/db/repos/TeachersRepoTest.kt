@@ -22,7 +22,7 @@ class TeachersRepoTest {
 
     @Order(1)
     @Test
-    fun test_add_teacher() {
+    fun add_teacher_succeeds() {
         runBlocking {
             val result = repo.addTeacher(teacher)
             assertTrue(result.wasAcknowledged())
@@ -31,7 +31,7 @@ class TeachersRepoTest {
 
     @Order(2)
     @Test
-    fun test_update_teacher() {
+    fun update_teacher_succeeds() {
         runBlocking {
             val result = repo.updateTeacher(teacher)
             println(result.modifiedCount)
@@ -41,7 +41,7 @@ class TeachersRepoTest {
 
     @Order(3)
     @Test
-    fun test_get_all_teachers() {
+    fun get_allTeachers_succeeds() {
         runBlocking {
             val teachersList = repo.getAllTeachers()
             assertTrue(teachersList.isNotEmpty())
@@ -51,7 +51,7 @@ class TeachersRepoTest {
 
     @Order(4)
     @Test
-    fun test_search_for_existing_teachers_1() {
+    fun search_existingTeachers1_succeeds() {
         runBlocking {
             val teachersList = repo.searchForTeachers(Teacher(name = "na"))
             assertTrue(teachersList.isNotEmpty())
@@ -61,7 +61,7 @@ class TeachersRepoTest {
 
     @Order(5)
     @Test
-    fun test_search_for_existing_teachers_2() {
+    fun search_existingTeachers2_succeeds() {
         runBlocking {
             val teachersList = repo.searchForTeachers(Teacher(name = "na", firstName = "st"))
             assertTrue(teachersList.isNotEmpty())
@@ -71,9 +71,9 @@ class TeachersRepoTest {
 
     @Order(6)
     @Test
-    fun test_search_for_non_existing_teachers() {
+    fun search_nonExisting_teachers_fails() {
         runBlocking {
-            val teachersList = repo.searchForTeachers(teacher.copy(name = "go"))
+            val teachersList = repo.searchForTeachers(Teacher(name = "go"))
             assertTrue(teachersList.isEmpty())
             assertFalse(teachersList.contains(teacher))
         }
@@ -81,7 +81,7 @@ class TeachersRepoTest {
 
     @Order(7)
     @Test
-    fun test_delete_teacher() {
+    fun delete_teacher_succeeds() {
         runBlocking {
             val result = repo.deleteTeacher(teacher)
             assertTrue(result != null)

@@ -13,6 +13,7 @@ import org.kodein.di.generic.instance
 import org.litote.kmongo.id.toId
 import utils.sealed.EntityType
 import utils.sealed.HistoryType
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -24,7 +25,7 @@ class HistoryRepoTest {
 
     @Order(1)
     @Test
-    fun test_add_history() {
+    fun add_history_succeeds() {
         runBlocking {
             val result = repo.addHistory(history)
             assertTrue(result.insertedId?.asObjectId()?.value.toString() == "60a81be79827071039aac049")
@@ -33,7 +34,7 @@ class HistoryRepoTest {
 
     @Order(2)
     @Test
-    fun test_get_all_histories() {
+    fun get_allHistories_succeeds() {
         runBlocking {
             val historiesList = repo.getAllHistories()
             assertTrue(historiesList.isNotEmpty())
@@ -41,5 +42,13 @@ class HistoryRepoTest {
         }
     }
 
+    @Order(3)
+    @Test
+    fun delete_history_succeeds() {
+        runBlocking {
+            val deletedHistory = repo.deleteHistory(history)
+            assertEquals(deletedHistory, history)
+        }
+    }
 
 }

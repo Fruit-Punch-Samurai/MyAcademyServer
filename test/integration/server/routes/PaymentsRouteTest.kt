@@ -28,7 +28,7 @@ class PaymentsRouteTest {
 
     @Order(1)
     @Test
-    fun test_post_add_request(): Unit = withTestApplication(Application::module) {
+    fun post_add_succeeds(): Unit = withTestApplication(Application::module) {
         val call = handleRequest(HttpMethod.Post, paymentsPath) {
             addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             setBody(payment.toJsonElement().toString())
@@ -41,7 +41,7 @@ class PaymentsRouteTest {
 
     @Order(2)
     @Test
-    fun test_post_update_request(): Unit = withTestApplication(Application::module) {
+    fun post_update_succeeds(): Unit = withTestApplication(Application::module) {
         val call = handleRequest(HttpMethod.Post, "$paymentsPath/$paymentId") {
             addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             setBody(payment.copy(amount = 7500F).toJsonElement().toString())
@@ -54,7 +54,7 @@ class PaymentsRouteTest {
 
     @Order(3)
     @Test
-    fun test_post_search_request_1(): Unit = withTestApplication(Application::module) {
+    fun post_search1_succeeds(): Unit = withTestApplication(Application::module) {
         val call = handleRequest(HttpMethod.Post, "$paymentsPath${RoutingConstants.SEARCH_ROUTE}") {
             addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             setBody(
@@ -73,7 +73,7 @@ class PaymentsRouteTest {
 
     @Order(4)
     @Test
-    fun test_post_search_request_2(): Unit = withTestApplication(Application::module) {
+    fun post_search2_succeeds(): Unit = withTestApplication(Application::module) {
         val call = handleRequest(HttpMethod.Post, "$paymentsPath${RoutingConstants.SEARCH_ROUTE}") {
             addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             setBody(Payment(amount = 7500F).toJsonElement().toString())
@@ -91,7 +91,7 @@ class PaymentsRouteTest {
 
     @Order(5)
     @Test
-    fun test_get_one_request() = withTestApplication(Application::module) {
+    fun get_one_succeeds() = withTestApplication(Application::module) {
         with(handleRequest(HttpMethod.Get, "$paymentsPath/$paymentId")) {
             assertEquals(HttpStatusCode.OK, response.status())
         }
@@ -99,7 +99,7 @@ class PaymentsRouteTest {
 
     @Order(6)
     @Test
-    fun test_get_all_request() = withTestApplication(Application::module) {
+    fun get_all_succeeds() = withTestApplication(Application::module) {
         with(handleRequest(HttpMethod.Get, paymentsPath)) {
             assertEquals(HttpStatusCode.OK, response.status())
         }
@@ -107,7 +107,7 @@ class PaymentsRouteTest {
 
     @Order(7)
     @Test
-    fun test_deleteOne_request() = withTestApplication(Application::module) {
+    fun delete_one_succeeds() = withTestApplication(Application::module) {
         val call = handleRequest(HttpMethod.Delete, "$paymentsPath/$paymentId")
 
         with(call) {

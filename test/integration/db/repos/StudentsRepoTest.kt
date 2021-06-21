@@ -22,7 +22,7 @@ class StudentsRepoTest {
 
     @Order(1)
     @Test
-    fun test_add_student() {
+    fun add_student_succeeds() {
         runBlocking {
             val result = repo.addStudent(student)
             assertTrue(result.wasAcknowledged())
@@ -31,7 +31,7 @@ class StudentsRepoTest {
 
     @Order(2)
     @Test
-    fun test_update_student() {
+    fun update_existingStudent_succeeds() {
         runBlocking {
             val result = repo.updateStudent(student)
             println(result.modifiedCount)
@@ -41,7 +41,7 @@ class StudentsRepoTest {
 
     @Order(3)
     @Test
-    fun test_update_non_existing_student() {
+    fun update_nonExistingStudent_fails() {
         runBlocking {
             val result = repo.updateStudent(student.copy(ObjectId("60a81be79827071039aac048").toId()))
             println(result.modifiedCount)
@@ -51,7 +51,7 @@ class StudentsRepoTest {
 
     @Order(4)
     @Test
-    fun test_get_all_students() {
+    fun get_allStudents_succeeds() {
         runBlocking {
             val studentsList = repo.getAllStudents()
             assertTrue(studentsList.isNotEmpty())
@@ -61,7 +61,7 @@ class StudentsRepoTest {
 
     @Order(5)
     @Test
-    fun test_search_for_existing_students_1() {
+    fun search_existingStudents1_succeeds() {
         runBlocking {
             val studentsList = repo.searchForStudents(Student(name = "na"))
             assertTrue(studentsList.isNotEmpty())
@@ -71,7 +71,7 @@ class StudentsRepoTest {
 
     @Order(6)
     @Test
-    fun test_search_for_existing_students_2() {
+    fun search_existingStudents2_succeeds() {
         runBlocking {
             val studentsList = repo.searchForStudents(Student(name = "na", firstName = "st"))
             assertTrue(studentsList.isNotEmpty())
@@ -81,9 +81,9 @@ class StudentsRepoTest {
 
     @Order(7)
     @Test
-    fun test_search_for_non_existing_students() {
+    fun search_nonExistingStudents_fails() {
         runBlocking {
-            val studentsList = repo.searchForStudents(student.copy(name = "go"))
+            val studentsList = repo.searchForStudents(Student(name = "go"))
             assertTrue(studentsList.isEmpty())
             assertFalse(studentsList.contains(student))
         }
@@ -91,7 +91,7 @@ class StudentsRepoTest {
 
     @Order(8)
     @Test
-    fun test_delete_student() {
+    fun delete_student_succeeds() {
         runBlocking {
             val result = repo.deleteStudent(student)
             assertTrue(result != null)

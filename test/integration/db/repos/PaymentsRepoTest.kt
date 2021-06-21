@@ -25,7 +25,7 @@ class PaymentsRepoTest {
 
     @Order(1)
     @Test
-    fun test_add_payment() {
+    fun add_payment_succeeds() {
         runBlocking {
             val result = repo.addPayment(payment)
             assertTrue(result.wasAcknowledged())
@@ -34,7 +34,7 @@ class PaymentsRepoTest {
 
     @Order(2)
     @Test
-    fun test_update_payment() {
+    fun update_payment_succeeds() {
         runBlocking {
             val result = repo.updatePayment(payment)
             println(result.modifiedCount)
@@ -44,7 +44,7 @@ class PaymentsRepoTest {
 
     @Order(3)
     @Test
-    fun test_get_all_payments() {
+    fun get_allPayments_succeeds() {
         runBlocking {
             val paymentsList = repo.getAllPayments()
             assertTrue(paymentsList.isNotEmpty())
@@ -54,7 +54,7 @@ class PaymentsRepoTest {
 
     @Order(4)
     @Test
-    fun test_search_for_existing_payments_1() {
+    fun search_existingPayments1_succeeds() {
         runBlocking {
             val paymentsList = repo.searchForPayments(Payment(paymentType = PaymentType.Incoming))
             assertTrue(paymentsList.isNotEmpty())
@@ -64,7 +64,7 @@ class PaymentsRepoTest {
 
     @Order(5)
     @Test
-    fun test_search_for_existing_payments_2() {
+    fun search_existingPayments2_succeeds() {
         runBlocking {
             val paymentsList = repo.searchForPayments(Payment(amount = 5000F, entityType = EntityType.Student))
             assertTrue(paymentsList.isNotEmpty())
@@ -74,7 +74,7 @@ class PaymentsRepoTest {
 
     @Order(6)
     @Test
-    fun test_search_for_non_existing_payments() {
+    fun search_nonExistingPayments_fails() {
         runBlocking {
             val paymentsList = repo.searchForPayments(Payment(amount = 4000F))
             assertTrue(paymentsList.isEmpty())
@@ -84,7 +84,7 @@ class PaymentsRepoTest {
 
     @Order(7)
     @Test
-    fun test_delete_payment() {
+    fun delete_payment_succeeds() {
         runBlocking {
             val result = repo.deletePayment(payment)
             assertTrue(result != null)

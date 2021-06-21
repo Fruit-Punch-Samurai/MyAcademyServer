@@ -42,4 +42,5 @@ object Extensions {
     fun PrivateUser.getCredentials(): Credentials {
         return Credentials(this.name, this.password)
     }
+
 }
