@@ -13,25 +13,23 @@ import utils.sealed.RankType
 
 object Serializers {
 
-    //TODO: Use constant values in sealed classes for serializing
-
     object HistoryTypeSerializer : KSerializer<HistoryType> {
-        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("type", PrimitiveKind.STRING)
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("historyType", PrimitiveKind.STRING)
 
         override fun serialize(encoder: Encoder, value: HistoryType) {
             when (value) {
-                HistoryType.Add -> encoder.encodeString("add")
-                HistoryType.Delete -> encoder.encodeString("delete")
-                HistoryType.Modify -> encoder.encodeString("modify")
-                else -> encoder.encodeString("other")
+                is HistoryType.Add -> encoder.encodeString(value.value)
+                is HistoryType.Delete -> encoder.encodeString(value.value)
+                is HistoryType.Modify -> encoder.encodeString(value.value)
+                is HistoryType.Other -> encoder.encodeString(value.value)
             }
         }
 
         override fun deserialize(decoder: Decoder): HistoryType {
             return when (decoder.decodeString()) {
-                "add" -> HistoryType.Add
-                "delete" -> HistoryType.Delete
-                "modify" -> HistoryType.Modify
+                HistoryType.Add.value -> HistoryType.Add
+                HistoryType.Delete.value -> HistoryType.Delete
+                HistoryType.Modify.value -> HistoryType.Modify
                 else -> HistoryType.Other
             }
         }
@@ -80,21 +78,21 @@ object Serializers {
     }
 
     object RankTypeSerializer : KSerializer<RankType> {
-        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("rank", PrimitiveKind.STRING)
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("rankType", PrimitiveKind.STRING)
 
         override fun serialize(encoder: Encoder, value: RankType) {
             when (value) {
-                RankType.Admin -> encoder.encodeString("admin")
-                RankType.Normal -> encoder.encodeString("normal")
-                RankType.Guest -> encoder.encodeString("guest")
+                is RankType.Admin -> encoder.encodeString(value.value)
+                is RankType.Normal -> encoder.encodeString(value.value)
+                is RankType.Guest -> encoder.encodeString(value.value)
             }
         }
 
         override fun deserialize(decoder: Decoder): RankType {
             return when (decoder.decodeString()) {
-                "admin" -> RankType.Admin
-                "normal" -> RankType.Normal
-                "guest" -> RankType.Guest
+                RankType.Admin.value -> RankType.Admin
+                RankType.Normal.value -> RankType.Normal
+                RankType.Guest.value -> RankType.Guest
                 else -> RankType.Guest
             }
         }
