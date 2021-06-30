@@ -17,7 +17,6 @@ class StudentsRepo {
 
     suspend fun getAllStudents() = col.find().toList()
 
-    //TODO: Sort by Date
     suspend fun getLastStudents() = col.find().limit(100).descendingSort(Student::date).toList()
 
     suspend fun getStudent(id: String) = col.findOneById(ObjectId(id))

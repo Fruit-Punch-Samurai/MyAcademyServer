@@ -8,8 +8,6 @@ import utils.Serializers
 import utils.sealed.EntityType
 import utils.sealed.PaymentType
 
-//TODO: Add imprDate and amount not null
-
 @Serializable
 data class Payment(
     val _id: @Contextual Id<Payment>? = null,
@@ -21,5 +19,6 @@ data class Payment(
     val entityID: String? = null,
     val notesToPrint: String? = null,
     val notes: String? = null,
+    var printDate: LocalDateTime? = null,
     var date: LocalDateTime? = null,
 ) : Entity
