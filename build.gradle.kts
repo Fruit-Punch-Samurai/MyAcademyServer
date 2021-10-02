@@ -39,7 +39,7 @@ dependencies {
     implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongoVersion")
     implementation("org.litote.kmongo:kmongo-id-serialization:$kmongoVersion")
 
-    implementation("org.kodein.di:kodein-di:7.6.0")
+    implementation("org.kodein.di:kodein-di:7.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
