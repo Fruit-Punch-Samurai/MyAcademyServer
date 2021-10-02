@@ -5,7 +5,7 @@ import kodein
 import models.Credentials
 import models.PrivateUser
 import org.bson.types.ObjectId
-import org.kodein.di.generic.instance
+import org.kodein.di.instance
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 import org.litote.kmongo.id.toId

@@ -8,7 +8,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import kodein
 import models.User
-import org.kodein.di.generic.instance
+import org.kodein.di.instance
 import server.routes.RoutingConstants.ID_PARAM_NAME
 import server.routes.RoutingConstants.ID_PARAM_ROUTE
 import utils.sealed.MyResult

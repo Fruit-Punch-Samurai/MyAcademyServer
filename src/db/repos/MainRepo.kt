@@ -2,7 +2,7 @@ package db.repos
 
 import kodein
 import models.*
-import org.kodein.di.generic.instance
+import org.kodein.di.instance
 import utils.DateManager
 import utils.sealed.MyResult
 

@@ -8,7 +8,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import kodein
 import models.Payment
-import org.kodein.di.generic.instance
+import org.kodein.di.instance
 import utils.sealed.MyResult
 
 object PaymentsRouting {

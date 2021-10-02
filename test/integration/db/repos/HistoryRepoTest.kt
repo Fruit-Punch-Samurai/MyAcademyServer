@@ -9,7 +9,7 @@ import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
-import org.kodein.di.generic.instance
+import org.kodein.di.instance
 import org.litote.kmongo.id.toId
 import utils.sealed.EntityType
 import utils.sealed.HistoryType

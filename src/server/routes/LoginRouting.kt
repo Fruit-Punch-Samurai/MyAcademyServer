@@ -7,7 +7,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import kodein
 import models.Credentials
-import org.kodein.di.generic.instance
+import org.kodein.di.instance
 import utils.sealed.MyResult
 
 object LoginRouting {

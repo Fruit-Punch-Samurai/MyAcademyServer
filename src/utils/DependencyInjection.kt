@@ -2,17 +2,17 @@ package utils
 
 import db.constants.DBConstants
 import db.repos.*
-import org.kodein.di.Kodein
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.singleton
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.singleton
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
 object DependencyInjection {
 
-    fun inject(): Kodein {
-        return Kodein {
+    fun inject(): DI {
+        return DI {
             bind<CoroutineDatabase>() with singleton { KMongo.createClient().coroutine.getDatabase(DBConstants.DB_NAME) }
             bind<UsersRepo>() with singleton { UsersRepo() }
             bind<PrivateUsersRepo>() with singleton { PrivateUsersRepo() }

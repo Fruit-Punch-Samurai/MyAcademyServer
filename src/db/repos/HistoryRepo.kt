@@ -4,7 +4,7 @@ import db.constants.DBConstants
 import kodein
 import models.History
 import org.bson.types.ObjectId
-import org.kodein.di.generic.instance
+import org.kodein.di.instance
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.eq
 import org.litote.kmongo.id.toId

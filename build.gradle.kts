@@ -5,7 +5,7 @@ val kmongoVersion: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.5.0"
+    kotlin("jvm") version "1.5.31"
     kotlin("plugin.serialization") version "1.5.0"
 }
 
@@ -39,12 +39,12 @@ dependencies {
     implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongoVersion")
     implementation("org.litote.kmongo:kmongo-id-serialization:$kmongoVersion")
 
-    implementation("org.kodein.di:kodein-di-generic-jvm:5.0.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.0")
+    implementation("org.kodein.di:kodein-di:7.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-    testImplementation(kotlin("test"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.31")
 }
 
 kotlin.sourceSets["main"].kotlin.srcDirs("src")

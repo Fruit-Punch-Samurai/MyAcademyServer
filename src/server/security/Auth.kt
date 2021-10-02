@@ -3,7 +3,7 @@ package server.security
 import db.repos.MainRepo
 import io.ktor.auth.*
 import kodein
-import org.kodein.di.generic.instance
+import org.kodein.di.instance
 import server.security.SecurityConstants.REALM
 import server.security.SecurityConstants.REGULAR_USER_AUTH
 import utils.sealed.MyResult
